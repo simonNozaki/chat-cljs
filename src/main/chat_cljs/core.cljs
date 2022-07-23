@@ -43,9 +43,11 @@
     (println server)
     (.on server "connection" (fn [socket] 
                                (info "A user connected...")
+                               (.emit (.-broadcast socket) "A new user joined!")
                                (.on socket "chat message" (fn [msg]
-                                                            (info (str "A message received: " msg))
-                                                            (.emit server "chat message" msg)))))))
+                                                            (js/console.log (clj->js {:message msg :created-at (js/Date)}))
+                                                            (info (str "A message received: " msg)) 
+                                                            (.emit server "chat message" (clj->js {:text msg :created-at (js/Date)}))))))))
 
 (defn start! []
   ; evaluate callbacks on connection

@@ -32,7 +32,13 @@
       });
       socket.on("chat message", function(message) {
         console.log(message);
-        $("#timeline").append("<li class='card horizontal'>").text(message);
+        var baseItem = $("<li>").append(
+          $("<img src='icon.png' class='circle'>"),
+          $("<p>").text(message["created-at"]),
+          $("<p>").text(message.text),
+        )
+          
+        $("#timeline").append(baseItem);
       });
     });
   </script>
