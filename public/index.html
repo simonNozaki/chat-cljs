@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+  <head>
+    <title>Caa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1> Chatting... </h1>
+
+      <ul id="timeline" class="collection"></ul>
+      <form id="chatSend" action="" class="row">
+        <div class="col s11">
+          <input id="chatText" autocomplete="off">
+        </div>
+        <div class="s1">
+          <button class="waves-effect waves-light btn">送信</button>
+        </div>
+      </form>
+
+    </div>
+  </body>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script>
+    $(function() {
+      var socket = io();
+      $("form").submit(function() {
+        socket.emit("chat message", $("#chatText").val());
+        $("#chatText").val("");
+        return false;
+      });
+      socket.on("chat message", function(message) {
+        console.log(message);
+        $("#timeline").append("<li class='card horizontal'>").text(message);
+      });
+    });
+  </script>
+</html>

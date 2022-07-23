@@ -1,0 +1,17 @@
+;; shadow-cljs configuration
+{:source-paths
+ ["src/dev"
+  "src/main"
+  "src/test"]
+
+ :dependencies
+ [[com.lambdaisland/glogi "1.1.144"]]
+
+ :builds
+ {:app
+  {:target :node-script
+   :main chat-cljs.core/main
+   :output-to "core.js"
+   :devtools
+   {:after-load chat-cljs.core/restart!
+    :before-load chat-cljs.core/stop!}}}}
