@@ -2,6 +2,11 @@
   "name": "chat-cljs",
   "description": "simple chat app made by clojurescript",
   "license": "MIT",
+  "main": "core.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simonNozaki/chat-cljs.git"
+  },
   "version": "0.0.1",
   "scripts": {
     "watch": "npx shadow-cljs watch app"
@@ -11,7 +16,6 @@
   },
   "dependencies": {
     "express": "^4.18.1",
-    "log4js": "^6.6.0",
     "socket.io": "^4.5.1"
   }
 }
