@@ -13,8 +13,8 @@
 (defn info [message]
   (log/info :message message))
 
-
-(js/console.log "message")
+(defn to-js [map]
+  (clj->js map))
 
 ; public directory of assets
 (def public
@@ -40,14 +40,18 @@
 ; callback def of emittion on connection from user
 (def io
   (let [server (new Server http)]
-    (println server)
-    (.on server "connection" (fn [socket] 
-                               (info "A user connected...")
-                               (.emit (.-broadcast socket) "A new user joined!")
-                               (.on socket "chat message" (fn [msg]
-                                                            (js/console.log (clj->js {:message msg :created-at (js/Date)}))
-                                                            (info (str "A message received: " msg)) 
-                                                            (.emit server "chat message" (clj->js {:text msg :created-at (js/Date)}))))))))
+    (.on server
+         "connection"
+         (fn [socket] 
+           (info "A user connected...") 
+           (.emit (.-broadcast socket) "A new user joined!") 
+           (.on socket
+                "chat message" (fn [msg] (let [user (.-user msg)
+                                               text (.-text msg) 
+                                               created-at (js/Date)]
+                                           (js/console.log msg)
+                                           (info (str user " sent a message: " msg)) 
+                                           (.emit server "chat message" (to-js {:text text :created-at created-at})))))))))
 
 (defn start! []
   ; evaluate callbacks on connection
